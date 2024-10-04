@@ -1,54 +1,34 @@
-# Astro Starter Kit: Basics
+# Pokémon Blog
 
-```sh
-npm create astro@latest -- --template basics
-```
+![Pokémon Logo](https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/25.png)
 
-[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/withastro/astro/tree/latest/examples/basics)
-[![Open with CodeSandbox](https://assets.codesandbox.io/github/button-edit-lime.svg)](https://codesandbox.io/p/sandbox/github/withastro/astro/tree/latest/examples/basics)
-[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/withastro/astro?devcontainer_path=.devcontainer/basics/devcontainer.json)
+Bienvenido al Pokémon Blog, tu fuente definitiva de noticias, información y herramientas para entrenadores Pokémon.
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+## 🚀 Características
 
-![just-the-basics](https://github.com/withastro/astro/assets/2244813/a0a5533c-a856-4198-8470-2d67b1d7c554)
+- **Noticias Recientes**: Mantente al día con las últimas noticias del mundo Pokémon.
+- **Buscador de Pokémon**: Encuentra información detallada sobre cualquier Pokémon.
+- **Generador de Equipos**: Crea equipos Pokémon aleatorios para tus aventuras.
+- **Comparador de Tipos**: Analiza las fortalezas y debilidades de diferentes combinaciones de tipos.
+- **¿Quién es ese Pokémon?**: Pon a prueba tus conocimientos con este divertido juego.
 
-## 🚀 Project Structure
+## 🛠️ Tecnologías Utilizadas
 
-Inside of your Astro project, you'll see the following folders and files:
+- [Astro](https://astro.build)
+- [React](https://reactjs.org)
+- [PokeAPI](https://pokeapi.co)
 
-```text
-/
-├── public/
-│   └── favicon.svg
-├── src/
-│   ├── components/
-│   │   └── Card.astro
-│   ├── layouts/
-│   │   └── Layout.astro
-│   └── pages/
-│       └── index.astro
-└── package.json
-```
+## 🧞 Comandos
 
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
+Todos los comandos se ejecutan desde la raíz del proyecto, desde una terminal:
 
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
-
-Any static assets, like images, can be placed in the `public/` directory.
-
-## 🧞 Commands
-
-All commands are run from the root of the project, from a terminal:
-
-| Command                   | Action                                           |
+| Comando                   | Acción                                           |
 | :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
+| `npm install`             | Instala las dependencias                         |
+| `npm run dev`             | Inicia el servidor de desarrollo local en `localhost:4321`      |
+| `npm run build`           | Construye tu sitio de producción en `./dist/`          |
+| `npm run preview`         | Previsualiza tu build localmente, antes de desplegar     |
 
-## 👀 Want to learn more?
+## 👀 ¿Quieres saber más?
 
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+Siéntete libre de explorar el código fuente y contribuir al proyecto. ¡Los entrenadores Pokémon unidos jamás serán vencidos!
