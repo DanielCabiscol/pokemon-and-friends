@@ -1,0 +1,51 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Card from '../components/Card.astro';
+
+const posts = [
+	{
+		title: "Latest Pokémon News",
+		slug: "latest-news",
+		excerpt: "Stay up to date with the latest Pokémon news and announcements."
+	},
+	{
+		title: "Game Strategies",
+		slug: "game-strategies",
+		excerpt: "Learn tips and tricks to become a Pokémon master in various games."
+	},
+	{
+		title: "Pokémon of the Week",
+		slug: "pokemon-of-the-week",
+		excerpt: "Discover interesting facts about a featured Pokémon every week."
+	}
+];
+---
+
+<Layout title="Pokémon Blog - All Posts">
+	<h1>Pokémon Blog Posts</h1>
+	<ul class="post-list">
+		{posts.map((post) => (
+			<li>
+				<Card
+					href={`/blog/${post.slug}`}
+					title={post.title}
+					body={post.excerpt}
+				/>
+			</li>
+		))}
+	</ul>
+</Layout>
+
+<style>
+	h1 {
+		font-size: 2.5rem;
+		margin-bottom: 2rem;
+	}
+	.post-list {
+		list-style-type: none;
+		padding: 0;
+	}
+	.post-list li {
+		margin-bottom: 2rem;
+	}
+</style>

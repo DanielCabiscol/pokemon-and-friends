@@ -1,0 +1,128 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout title="¿Quién es ese Pokémon?">
+	<h1>¿Quién es ese Pokémon?</h1>
+	<div class="game-container">
+		<div id="pokemonImage" class="pokemon-image"></div>
+		<div id="options" class="options"></div>
+		<button id="nextPokemon">Siguiente Pokémon</button>
+	</div>
+	<div id="score" class="score">Puntuación: 0</div>
+
+	<script>
+		const pokemonImage = document.getElementById('pokemonImage');
+		const options = document.getElementById('options');
+		const nextButton = document.getElementById('nextPokemon');
+		const scoreElement = document.getElementById('score');
+
+		let currentPokemon;
+		let score = 0;
+
+		nextButton.addEventListener('click', loadNewPokemon);
+
+		async function loadNewPokemon() {
+			options.innerHTML = '';
+			const randomId = Math.floor(Math.random() * 898) + 1;
+			const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${randomId}`);
+			currentPokemon = await response.json();
+
+			pokemonImage.style.backgroundImage = `url(${currentPokemon.sprites.other['official-artwork'].front_default})`;
+			pokemonImage.classList.add('silhouette');
+
+			const pokemonOptions = await getRandomPokemonOptions(currentPokemon.name);
+			displayOptions(pokemonOptions);
+		}
+
+		async function getRandomPokemonOptions(correctName) {
+			const options = [correctName];
+			while (options.length < 4) {
+				const randomId = Math.floor(Math.random() * 898) + 1;
+				const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${randomId}`);
+				const pokemon = await response.json();
+				if (!options.includes(pokemon.name)) {
+					options.push(pokemon.name);
+				}
+			}
+			return options.sort(() => Math.random() - 0.5);
+		}
+
+		function displayOptions(pokemonOptions) {
+			pokemonOptions.forEach(name => {
+				const button = document.createElement('button');
+				button.textContent = name.charAt(0).toUpperCase() + name.slice(1);
+				button.addEventListener('click', () => checkAnswer(name));
+				options.appendChild(button);
+			});
+		}
+
+		function checkAnswer(selectedName) {
+			pokemonImage.classList.remove('silhouette');
+			if (selectedName === currentPokemon.name) {
+				score++;
+				alert('¡Correcto!');
+			} else {
+				alert(`Incorrecto. Era ${currentPokemon.name.charAt(0).toUpperCase() + currentPokemon.name.slice(1)}.`);
+			}
+			scoreElement.textContent = `Puntuación: ${score}`;
+			disableOptions();
+		}
+
+		function disableOptions() {
+			const buttons = options.getElementsByTagName('button');
+			for (let button of buttons) {
+				button.disabled = true;
+			}
+		}
+
+		loadNewPokemon();
+	</script>
+</Layout>
+
+<style>
+	h1 {
+		text-align: center;
+		color: #ff3e3e;
+	}
+	.game-container {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		margin-bottom: 2rem;
+	}
+	.pokemon-image {
+		width: 300px;
+		height: 300px;
+		background-size: contain;
+		background-repeat: no-repeat;
+		background-position: center;
+		margin-bottom: 1rem;
+	}
+	.silhouette {
+		filter: brightness(0);
+	}
+	.options {
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		gap: 1rem;
+		margin-bottom: 1rem;
+	}
+	button {
+		padding: 0.5rem 1rem;
+		font-size: 1rem;
+		background-color: #ff3e3e;
+		color: white;
+		border: none;
+		border-radius: 4px;
+		cursor: pointer;
+	}
+	button:hover {
+		background-color: #e63636;
+	}
+	.score {
+		text-align: center;
+		font-size: 1.2rem;
+		font-weight: bold;
+	}
+</style>

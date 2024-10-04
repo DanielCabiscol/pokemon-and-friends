@@ -1,0 +1,146 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout title="Comparador de Tipos Pokémon">
+	<h1>Comparador de Tipos Pokémon</h1>
+	<div class="type-selector">
+		<select id="type1">
+			<option value="">Selecciona el primer tipo</option>
+		</select>
+		<select id="type2">
+			<option value="">Selecciona el segundo tipo (opcional)</option>
+		</select>
+		<button id="compareTypes">Comparar</button>
+	</div>
+	<div id="matchupResults" class="matchup-results"></div>
+
+	<script>
+		const type1Select = document.getElementById('type1');
+		const type2Select = document.getElementById('type2');
+		const compareButton = document.getElementById('compareTypes');
+		const matchupResults = document.getElementById('matchupResults');
+
+		const types = [
+			"normal", "fire", "water", "electric", "grass", "ice", "fighting", "poison", "ground", "flying",
+			"psychic", "bug", "rock", "ghost", "dragon", "dark", "steel", "fairy"
+		];
+
+		types.forEach(type => {
+			const option1 = document.createElement('option');
+			option1.value = type;
+			option1.textContent = type.charAt(0).toUpperCase() + type.slice(1);
+			type1Select.appendChild(option1);
+
+			const option2 = option1.cloneNode(true);
+			type2Select.appendChild(option2);
+		});
+
+		compareButton.addEventListener('click', compareTypes);
+
+		async function compareTypes() {
+			const type1 = type1Select.value;
+			const type2 = type2Select.value;
+
+			if (!type1) {
+				alert('Por favor, selecciona al menos un tipo.');
+				return;
+			}
+
+			try {
+				const response1 = await fetch(`https://pokeapi.co/api/v2/type/${type1}`);
+				const data1 = await response1.json();
+
+				let damageRelations = data1.damage_relations;
+
+				if (type2) {
+					const response2 = await fetch(`https://pokeapi.co/api/v2/type/${type2}`);
+					const data2 = await response2.json();
+					damageRelations = combineDamageRelations(damageRelations, data2.damage_relations);
+				}
+
+				displayMatchupResults(damageRelations);
+			} catch (error) {
+				console.error('Error:', error);
+				matchupResults.innerHTML = '<p>Error al obtener los datos. Por favor, inténtalo de nuevo.</p>';
+			}
+		}
+
+		function combineDamageRelations(dr1, dr2) {
+			const combined = JSON.parse(JSON.stringify(dr1));
+			
+			['double_damage_from', 'half_damage_from', 'no_damage_from'].forEach(key => {
+				dr2[key].forEach(type => {
+					if (!combined[key].some(t => t.name === type.name)) {
+						combined[key].push(type);
+					}
+				});
+			});
+
+			return combined;
+		}
+
+		function displayMatchupResults(damageRelations) {
+			const categories = [
+				{ title: 'Debilidad (2x daño)', key: 'double_damage_from' },
+				{ title: 'Resistencia (1/2 daño)', key: 'half_damage_from' },
+				{ title: 'Inmunidad (0 daño)', key: 'no_damage_from' }
+			];
+
+			let html = '';
+
+			categories.forEach(category => {
+				html += `<h3>${category.title}</h3>`;
+				if (damageRelations[category.key].length > 0) {
+					html += '<ul>';
+					damageRelations[category.key].forEach(type => {
+						html += `<li>${type.name.charAt(0).toUpperCase() + type.name.slice(1)}</li>`;
+					});
+					html += '</ul>';
+				} else {
+					html += '<p>Ninguno</p>';
+				}
+			});
+
+			matchupResults.innerHTML = html;
+		}
+	</script>
+</Layout>
+
+<style>
+	h1 {
+		text-align: center;
+		color: #ff3e3e;
+	}
+	.type-selector {
+		display: flex;
+		justify-content: center;
+		margin-bottom: 2rem;
+	}
+	select, button {
+		margin: 0 0.5rem;
+		padding: 0.5rem;
+		font-size: 1rem;
+	}
+	button {
+		background-color: #ff3e3e;
+		color: white;
+		border: none;
+		border-radius: 4px;
+		cursor: pointer;
+	}
+	button:hover {
+		background-color: #e63636;
+	}
+	.matchup-results {
+		max-width: 600px;
+		margin: 0 auto;
+	}
+	h3 {
+		color: #ff3e3e;
+	}
+	ul {
+		list-style-type: none;
+		padding-left: 0;
+	}
+</style>

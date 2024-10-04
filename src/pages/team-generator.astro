@@ -1,0 +1,78 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout title="Generador de Equipos Pokémon">
+	<h1>Generador de Equipos Pokémon</h1>
+	<button id="generateTeam">Generar Equipo</button>
+	<div id="teamContainer" class="team-container"></div>
+
+	<script>
+		const generateTeamButton = document.getElementById('generateTeam');
+		const teamContainer = document.getElementById('teamContainer');
+
+		generateTeamButton.addEventListener('click', generateRandomTeam);
+
+		async function generateRandomTeam() {
+			teamContainer.innerHTML = 'Generando equipo...';
+			const team = [];
+
+			for (let i = 0; i < 6; i++) {
+				const randomId = Math.floor(Math.random() * 898) + 1; // Hay 898 Pokémon en total
+				const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${randomId}`);
+				const data = await response.json();
+				team.push(data);
+			}
+
+			displayTeam(team);
+		}
+
+		function displayTeam(team) {
+			teamContainer.innerHTML = '';
+			team.forEach(pokemon => {
+				const pokemonElement = document.createElement('div');
+				pokemonElement.classList.add('pokemon');
+				pokemonElement.innerHTML = `
+					<img src="${pokemon.sprites.front_default}" alt="${pokemon.name}">
+					<p>${pokemon.name.charAt(0).toUpperCase() + pokemon.name.slice(1)}</p>
+				`;
+				teamContainer.appendChild(pokemonElement);
+			});
+		}
+	</script>
+</Layout>
+
+<style>
+	h1 {
+		text-align: center;
+		color: #ff3e3e;
+	}
+	#generateTeam {
+		display: block;
+		margin: 0 auto;
+		padding: 0.5rem 1rem;
+		font-size: 1rem;
+		background-color: #ff3e3e;
+		color: white;
+		border: none;
+		border-radius: 4px;
+		cursor: pointer;
+	}
+	#generateTeam:hover {
+		background-color: #e63636;
+	}
+	.team-container {
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: center;
+		margin-top: 2rem;
+	}
+	.pokemon {
+		text-align: center;
+		margin: 1rem;
+	}
+	.pokemon img {
+		width: 120px;
+		height: 120px;
+	}
+</style>

@@ -1,0 +1,52 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { getRecentNews } from '../utils/pokemonNews';
+
+const recentNews = await getRecentNews(20);
+---
+
+<Layout title="Pokémon Blog - Noticias Recientes">
+	<h1>Noticias Recientes de Pokémon</h1>
+	<div class="news-container">
+		{recentNews.map((news) => (
+			<div class="news-item">
+				<h2>{news.title}</h2>
+				<p>{news.summary}</p>
+				<a href={`/news/${news.id}`}>Ir al detalle</a>
+			</div>
+		))}
+	</div>
+</Layout>
+
+<style>
+	h1 {
+		text-align: center;
+		color: #ff3e3e;
+		margin-bottom: 2rem;
+	}
+	.news-container {
+		display: flex;
+		flex-direction: column;
+		gap: 2rem;
+	}
+	.news-item {
+		background-color: #fff;
+		border-radius: 8px;
+		padding: 1rem;
+		box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+	}
+	.news-item h2 {
+		color: #ff3e3e;
+		margin-top: 0;
+	}
+	.news-item a {
+		display: inline-block;
+		margin-top: 1rem;
+		color: #ff3e3e;
+		text-decoration: none;
+		font-weight: bold;
+	}
+	.news-item a:hover {
+		text-decoration: underline;
+	}
+</style>

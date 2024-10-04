@@ -1,0 +1,92 @@
+---
+interface Props {
+	title: string;
+}
+
+const { title } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="description" content="Pokémon Blog" />
+		<meta name="viewport" content="width=device-width" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<meta name="generator" content={Astro.generator} />
+		<title>{title}</title>
+	</head>
+	<body>
+		<header>
+			<nav>
+				<ul>
+					<li><a href="/">Home</a></li>
+					<li><a href="/blog">Blog</a></li>
+					<li><a href="/search">Pokémon Search</a></li>
+					<li><a href="/team-generator">Team Generator</a></li>
+					<li><a href="/type-matchup">Type Matchup</a></li>
+					<li><a href="/who-is-that-pokemon">Who's that Pokémon?</a></li>
+					<li><a href="/about">About</a></li>
+				</ul>
+			</nav>
+		</header>
+		<main>
+			<slot />
+		</main>
+		<footer>
+			<p>&copy; 2023 Pokémon Blog. All rights reserved.</p>
+		</footer>
+	</body>
+</html>
+<style is:global>
+	:root {
+		--accent: 124, 58, 237;
+		--accent-gradient: linear-gradient(45deg, rgb(var(--accent)), #da62c4 30%, white 60%);
+	}
+	html {
+		font-family: system-ui, sans-serif;
+		background-color: #F6F6F6;
+	}
+	code {
+		font-family: Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono,
+			Bitstream Vera Sans Mono, Courier New, monospace;
+	}
+	body {
+		margin: 0;
+		padding: 0;
+		display: flex;
+		flex-direction: column;
+		min-height: 100vh;
+	}
+	header {
+		background-color: #ff3e3e;
+		padding: 1rem;
+	}
+	nav ul {
+		list-style-type: none;
+		padding: 0;
+		display: flex;
+		justify-content: center;
+		flex-wrap: wrap;
+	}
+	nav ul li {
+		margin: 0 1rem;
+	}
+	nav ul li a {
+		color: white;
+		text-decoration: none;
+		font-weight: bold;
+	}
+	main {
+		flex: 1;
+		padding: 2rem;
+		max-width: 800px;
+		margin: 0 auto;
+	}
+	footer {
+		background-color: #333;
+		color: white;
+		text-align: center;
+		padding: 1rem;
+	}
+</style>
